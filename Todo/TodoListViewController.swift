@@ -7,21 +7,24 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TodoListViewController: UITableViewController {
     
-    var todoArray: [String] = ["ドアを修理する", "市役所に行く", "車を売る"]
+    let realm = try! Realm()
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     // MARK: - テーブルの作成
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return todoArray.count
+        let todos = realm.objects(TodoDataModel.self)
+        return todos.count
     
     }
     
@@ -30,7 +33,11 @@ class TodoListViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
         
-        cell.textLabel?.text = todoArray[indexPath.row]
+        // Configure the cell...
+        let todos = realm.objects(TodoDataModel.self)
+        let todo  = todos[indexPath.row]
+        
+        cell.textLabel?.text = todo.text
         
         return cell
     }
@@ -59,10 +66,14 @@ class TodoListViewController: UITableViewController {
         let alert = UIAlertController(title: "Todoを追加", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "新規追加", style: .default) { (action) in
-            // 新規追加を確認したあとの処理
-            print("成功")
+
+            let todo  = TodoDataModel()
+            todo.text = textField.text!
             
-            self.todoArray.append(textField.text!)
+            try! self.realm.write {
+                self.realm.add(todo)
+            }
+            
             self.tableView.reloadData()
         }
         
