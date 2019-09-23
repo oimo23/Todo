@@ -64,6 +64,7 @@ class TodoListViewController: UITableViewController {
 
         // ポップアップの内容を設定
         let alert = UIAlertController(title: "Todoを追加", message: "", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "キャンセル", style: .cancel, handler: nil)
         
         let action = UIAlertAction(title: "新規追加", style: .default) { (action) in
 
@@ -84,6 +85,7 @@ class TodoListViewController: UITableViewController {
         
         // alertにactionボタンを追加
         alert.addAction(action)
+        alert.addAction(cancel)
         
         // 上記の設定をもとに実際にアラートを出現させる
         present(alert, animated: true, completion: nil)
