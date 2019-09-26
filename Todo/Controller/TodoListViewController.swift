@@ -39,21 +39,6 @@ class TodoListViewController: UITableViewController {
         return cell
     }
     
-    // MARK: - セルが選択されたとき
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
-        
-        let currentAccessoryType = tableView.cellForRow(at: indexPath)?.accessoryType
-        
-        if currentAccessoryType == .checkmark {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
     // MARK: - 右上の＋ボタンが押されたとき
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
