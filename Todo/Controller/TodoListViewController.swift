@@ -11,20 +11,18 @@ import RealmSwift
 
 class TodoListViewController: UITableViewController {
     
-    let realm = try! Realm()
+    private var todoRealmManager = TodoRealmManager()
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     // MARK: - テーブルの作成
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let todos = realm.objects(TodoDataModel.self)
-        return todos.count
+        return self.todoRealmManager.countTodos()
     
     }
     
@@ -32,9 +30,8 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
-        
-        // Configure the cell...
-        let todos = realm.objects(TodoDataModel.self)
+
+        let todos = self.todoRealmManager.fetchTodos()
         let todo  = todos[indexPath.row]
         
         cell.textLabel?.text = todo.text
@@ -71,9 +68,7 @@ class TodoListViewController: UITableViewController {
             let todo  = TodoDataModel()
             todo.text = textField.text!
             
-            try! self.realm.write {
-                self.realm.add(todo)
-            }
+            self.todoRealmManager.addTodo(todo: todo)
             
             self.tableView.reloadData()
         }
@@ -96,12 +91,7 @@ class TodoListViewController: UITableViewController {
         
         if editingStyle == .delete {
             
-            let todos = realm.objects(TodoDataModel.self)
-            let todo = todos[indexPath.row]
-            
-            try! realm.write {
-                realm.delete(todo)
-            }
+            self.todoRealmManager.deleteTodo(indexPath: indexPath)
             
             tableView.deleteRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
             
