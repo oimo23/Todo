@@ -14,7 +14,9 @@ class TodoRealmManager {
     let realm = try! Realm()
     
     func fetchTodos() -> Results<TodoDataModel> {
+        
         return realm.objects(TodoDataModel.self)
+    
     }
     
     func countTodos() -> Int {
@@ -23,18 +25,22 @@ class TodoRealmManager {
     }
     
     func addTodo(todo: TodoDataModel) {
+        
         try! self.realm.write {
             self.realm.add(todo)
         }
+        
     }
     
     func deleteTodo(indexPath: IndexPath) {
+        
         let todos = realm.objects(TodoDataModel.self)
         let todo = todos[indexPath.row]
         
         try! realm.write {
             realm.delete(todo)
         }
+        
     }
     
 }

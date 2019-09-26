@@ -10,5 +10,7 @@ import Foundation
 import RealmSwift
 
 class TodoDataModel: Object {
+    
     @objc dynamic var text = ""
+
 }

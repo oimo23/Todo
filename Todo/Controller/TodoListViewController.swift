@@ -20,6 +20,7 @@ class TodoListViewController: UITableViewController {
     }
     
     // MARK: - テーブルの作成
+    /***************************************************************/
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return self.todoRealmManager.countTodos()
@@ -27,6 +28,7 @@ class TodoListViewController: UITableViewController {
     }
     
     // MARK: - 各セルの中身を定義
+    /***************************************************************/
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
@@ -37,9 +39,11 @@ class TodoListViewController: UITableViewController {
         cell.textLabel?.text = todo.text
         
         return cell
+        
     }
     
     // MARK: - 右上の＋ボタンが押されたとき
+    /***************************************************************/
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
         var textField = UITextField()
@@ -56,6 +60,7 @@ class TodoListViewController: UITableViewController {
             self.todoRealmManager.addTodo(todo: todo)
             
             self.tableView.reloadData()
+            
         }
         
         alert.addTextField{ (alertTextField) in
@@ -69,9 +74,11 @@ class TodoListViewController: UITableViewController {
         
         // 上記の設定をもとに実際にアラートを出現させる
         present(alert, animated: true, completion: nil)
+        
     }
     
     // MARK: - 削除ボタン設定
+    /***************************************************************/
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
