@@ -90,6 +90,23 @@ class TodoListViewController: UITableViewController {
         // 上記の設定をもとに実際にアラートを出現させる
         present(alert, animated: true, completion: nil)
     }
+    
+    // MARK: - 削除ボタン設定
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            let todos = realm.objects(TodoDataModel.self)
+            let todo = todos[indexPath.row]
+            
+            try! realm.write {
+                realm.delete(todo)
+            }
+            
+            tableView.deleteRows(at: [indexPath as IndexPath], with: UITableView.RowAnimation.automatic)
+            
+        }
+    }
 
 
 }
